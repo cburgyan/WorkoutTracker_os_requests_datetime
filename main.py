@@ -3,10 +3,17 @@ import requests
 import datetime
 
 
+"""This program takes in a natural language phrase about exercise (eg "ran for 2 hours") from the console,
+then gets an exercise classification (eg "running"), calories burned, and duration (eg "120 minutes") back
+from nutritionix.com, then sends this info to sheety.co which in turn adds the information into a google
+docs spreadsheet (looks like excel).
+"""
+
 NUTRITIONIX_ID = os.environ.get("NUTRITIONIX_ID")
 NUTRITIONIX_KEY = os.environ.get("NUTRITIONIX_KEY")
-NUTRITIONIX_END_POINT = "https://trackapi.nutritionix.com/v2"
-SHEETY_END_POINT = "https://api.sheety.co/7520f59b0b5fdeee3c1019a9f5b0d39c/myWorkouts/workouts"
+NUTRITIONIX_ENDPOINT = os.environ.get("NUTRITIONIX_ENDPOINT"
+                                      "")
+SHEETY_ENDPOINT = os.environ.get("SHEETY_ENDPOINT")
 SHEETY_KEY = os.environ.get("SHEETY_KEY")
 SHEETY_ID = ""
 EXERCISE_EXTENSION = "natural/exercise"
@@ -37,7 +44,7 @@ while user_response != "exit":
             "height_cm": HEIGHT_CM,
             "age": AGE
         }
-        nutri_response = requests.post(url=f"{NUTRITIONIX_END_POINT}/{EXERCISE_EXTENSION}",
+        nutri_response = requests.post(url=f"{NUTRITIONIX_ENDPOINT}/{EXERCISE_EXTENSION}",
                                        json=nutri_params,
                                        headers=nutri_headers).json()
         print(nutri_response)
@@ -63,5 +70,5 @@ while user_response != "exit":
             }
         }
 
-        sheety_response = requests.post(url=SHEETY_END_POINT, headers=sheety_headers, json=sheety_params)
+        sheety_response = requests.post(url=SHEETY_ENDPOINT, headers=sheety_headers, json=sheety_params)
         print(sheety_response.text)
